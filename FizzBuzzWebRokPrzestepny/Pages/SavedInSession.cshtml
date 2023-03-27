@@ -4,3 +4,10 @@
     ViewData["Title"] = "Data in session";
 
 }
+@if (!string.IsNullOrWhiteSpace(Model.Name) && !string.IsNullOrWhiteSpace(Model.Year.ToString()))
+{<div>
+   <ul>
+        <li>@Model.Name, @Model.Year - @Model.Result</li>
+   </ul>
+</div>
+}

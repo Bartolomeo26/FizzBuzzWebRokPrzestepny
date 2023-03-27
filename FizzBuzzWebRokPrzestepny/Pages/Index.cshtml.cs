@@ -26,11 +26,27 @@ namespace FizzBuzzWebRokPrzestepny.Pages
 		}
 		public IActionResult OnPost()
 		{
-			if (ModelState.IsValid)
-			{
-				HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(FizzBuzz));
-				return RedirectToPage("./SavedInSession");
-			}
+            string rok_przestepny;
+            string session_year;
+            List<RokPrzestepny> tescikowo = new List<RokPrzestepny>();
+            if ((FizzBuzz.Rok % 4 == 0 && FizzBuzz.Rok % 100 != 0) || FizzBuzz.Rok % 400 == 0)
+            {
+                rok_przestepny = "To był rok przestępny."; session_year = "rok przestępny";
+            }
+            else
+            {
+                rok_przestepny = "To nie był rok przestępny."; session_year = "rok nieprzestępny";
+            }
+
+            string result = FizzBuzz.Imie + " urodził się w " + FizzBuzz.Rok + " roku. " + rok_przestepny;
+            if (ModelState.IsValid)
+			{ tescikowo.Add(FizzBuzz);
+                ViewData["message"] = result;
+                HttpContext.Session.SetString("imie", FizzBuzz.Imie);
+                HttpContext.Session.SetInt32("rok", FizzBuzz.Rok);
+                HttpContext.Session.SetString("rok_przestepny", session_year);
+               
+            }
 			return Page();
 		}
 

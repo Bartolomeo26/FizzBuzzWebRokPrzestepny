@@ -13,7 +13,9 @@ namespace FizzBuzzWebRokPrzestepny.Pages
         public RokPrzestepny FizzBuzz
         {
             get; set;
-        }
+        } = new RokPrzestepny();
+        
+        public Session FizzBuzzSession {  get; set; } = new Session();
 
         public IndexModel(ILogger<IndexModel> logger)
 		{
@@ -24,30 +26,35 @@ namespace FizzBuzzWebRokPrzestepny.Pages
 		{
 
 		}
-		public IActionResult OnPost()
-		{
+        public IActionResult OnPost()
+        {
             string rok_przestepny;
-            string session_year;
-            List<RokPrzestepny> tescikowo = new List<RokPrzestepny>();
+
+
             if ((FizzBuzz.Rok % 4 == 0 && FizzBuzz.Rok % 100 != 0) || FizzBuzz.Rok % 400 == 0)
             {
-                rok_przestepny = "To był rok przestępny."; session_year = "rok przestępny";
+                rok_przestepny = "To był rok przestępny."; FizzBuzz.czy_przestepny = "rok przestępny";
             }
             else
             {
-                rok_przestepny = "To nie był rok przestępny."; session_year = "rok nieprzestępny";
+                rok_przestepny = "To nie był rok przestępny."; FizzBuzz.czy_przestepny = "rok nieprzestępny";
             }
 
             string result = FizzBuzz.Imie + " urodził się w " + FizzBuzz.Rok + " roku. " + rok_przestepny;
-            if (ModelState.IsValid)
-			{ tescikowo.Add(FizzBuzz);
-                ViewData["message"] = result;
-                HttpContext.Session.SetString("imie", FizzBuzz.Imie);
-                HttpContext.Session.SetInt32("rok", FizzBuzz.Rok);
-                HttpContext.Session.SetString("rok_przestepny", session_year);
-               
+
+            if (!String.IsNullOrEmpty(FizzBuzz.Imie) && !String.IsNullOrEmpty(FizzBuzz.Rok.ToString()))
+            { ViewData["message"] = result; 
+                var CurrentData = HttpContext.Session.GetString("CurrentData");
+                if (CurrentData != null)
+                {
+                    FizzBuzzSession = JsonConvert.DeserializeObject<Session>(CurrentData);
+                }
+                FizzBuzzSession.SessionList.Add(FizzBuzz);
+                HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(FizzBuzzSession));
+                HttpContext.Session.SetString("CurrentData", JsonConvert.SerializeObject(FizzBuzzSession));
+
             }
-			return Page();
+            return Page();
 		}
 
 	}

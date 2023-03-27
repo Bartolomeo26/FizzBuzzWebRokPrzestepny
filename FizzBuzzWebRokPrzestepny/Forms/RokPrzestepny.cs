@@ -10,5 +10,8 @@ namespace FizzBuzzWebRokPrzestepny.Forms
         public int Rok { get; set; }
         [DisplayName("Imie użytkownika")]
         public string Imie { get; set; }
+        
+        public string czy_przestepny { get; set; }
+
     }
 }

@@ -4,10 +4,12 @@
     ViewData["Title"] = "Data in session";
 
 }
-@if (!string.IsNullOrWhiteSpace(Model.Name) && !string.IsNullOrWhiteSpace(Model.Year.ToString()))
-{<div>
+
+<div>
    <ul>
-        <li>@Model.Name, @Model.Year - @Model.Result</li>
+      @foreach(var obiekt in Model.FizzBuzzSession.SessionList)
+      {
+        <li>@obiekt.Imie, @obiekt.Rok - @obiekt.czy_przestepny</li> 
+      }    
    </ul>
 </div>
-}

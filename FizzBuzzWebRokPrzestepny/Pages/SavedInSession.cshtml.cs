@@ -11,20 +11,17 @@ namespace FizzBuzzWebRokPrzestepny.Pages
     public class SavedInSessionModel : PageModel
     {
         
-        public string Name { get; set; }
-        public int? Year { get; set; }
-        public string Result { get; set; }
-        public List<RokPrzestepny> testowe = new List<RokPrzestepny>();
+        public Session FizzBuzzSession { get; set; } = new Session();
+        
         public void OnGet()
         {
-
-            Name = HttpContext.Session.GetString("imie");
-            Year = HttpContext.Session.GetInt32("rok");
-            Result = HttpContext.Session.GetString("rok_przestepny");
-     
             var Data = HttpContext.Session.GetString("Data");
-			
-            
+            if (Data != null)
+            {
+                FizzBuzzSession = JsonConvert.DeserializeObject<Session>(Data);
+                HttpContext.Session.SetString("CurrentData", JsonConvert.SerializeObject(FizzBuzzSession));
+
+            }   
         }
         public IActionResult OnPost()
         {   
